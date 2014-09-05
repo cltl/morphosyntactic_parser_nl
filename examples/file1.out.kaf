@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<KAF xml:lang="nl" version="1">
+  <kafHeader>
+    <linguisticProcessors layer="text">
+      <lp timestamp="*" version="1.0" name="Open-nlp sentence splitter"/>
+      <lp timestamp="*" version="1.0" name="Open-nlp tokenizer"/>
+    </linguisticProcessors>
+    <linguisticProcessors layer="terms">
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-05T14:15:14CEST"/>
+    </linguisticProcessors>
+    <linguisticProcessors layer="constituents">
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-05T14:15:14CEST"/>
+    </linguisticProcessors>
+    <linguisticProcessors layer="deps">
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-05T14:15:14CEST"/>
+    </linguisticProcessors>
+  </kafHeader>
+  <text>
+    <wf wid="w1" sent="1">Mijn</wf>
+    <wf wid="w2" sent="1">hond</wf>
+    <wf wid="w3" sent="1">is</wf>
+    <wf wid="w4" sent="1">erg</wf>
+    <wf wid="w5" sent="1">mooi</wf>
+    <wf wid="w6" sent="1">.</wf>
+    <wf wid="w7" sent="2">Mijn</wf>
+    <wf wid="w8" sent="2">huis</wf>
+    <wf wid="w9" sent="2">is</wf>
+    <wf wid="w10" sent="2">erg</wf>
+    <wf wid="w11" sent="2">mooi</wf>
+    <wf wid="w12" sent="2">.</wf>
+  </text>
+  <terms>
+    <term id="t_0" lemma="mijn" pos="det#VNW(bez,det,stan,vol,1,ev,prenom,zonder,agr)" morphofeat="determiner(pron)">
+      <span>
+        <target id="w1"/>
+      </span>
+    </term>
+    <term id="t_1" lemma="hond" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+      <span>
+        <target id="w2"/>
+      </span>
+    </term>
+    <term id="t_2" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
+      <span>
+        <target id="w3"/>
+      </span>
+    </term>
+    <term id="t_3" lemma="erg" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+      <span>
+        <target id="w4"/>
+      </span>
+    </term>
+    <term id="t_4" lemma="mooi" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+      <span>
+        <target id="w5"/>
+      </span>
+    </term>
+    <term id="t_5" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
+      <span>
+        <target id="w6"/>
+      </span>
+    </term>
+    <term id="t_6" lemma="mijn" pos="det#VNW(bez,det,stan,vol,1,ev,prenom,zonder,agr)" morphofeat="determiner(pron)">
+      <span>
+        <target id="w7"/>
+      </span>
+    </term>
+    <term id="t_7" lemma="huis" pos="noun#N(soort,ev,basis,onz,stan)" morphofeat="noun(het,count,sg)">
+      <span>
+        <target id="w8"/>
+      </span>
+    </term>
+    <term id="t_8" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
+      <span>
+        <target id="w9"/>
+      </span>
+    </term>
+    <term id="t_9" lemma="erg" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+      <span>
+        <target id="w10"/>
+      </span>
+    </term>
+    <term id="t_10" lemma="mooi" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+      <span>
+        <target id="w11"/>
+      </span>
+    </term>
+    <term id="t_11" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
+      <span>
+        <target id="w12"/>
+      </span>
+    </term>
+  </terms>
+  <constituency>
+    <tree>
+      <nt id="nter0" label="top"/>
+      <nt id="nter1" label="smain"/>
+      <nt id="nter2" label="np"/>
+      <nt id="nter3" label="det"/>
+      <nt id="nter4" label="noun"/>
+      <nt id="nter5" label="verb"/>
+      <nt id="nter6" label="ap"/>
+      <nt id="nter7" label="adj"/>
+      <nt id="nter8" label="adj"/>
+      <nt id="nter9" label="punct"/>
+      <t id="ter0">
+        <span>
+          <target id="t_0"/>
+        </span>
+      </t>
+      <t id="ter1">
+        <span>
+          <target id="t_1"/>
+        </span>
+      </t>
+      <t id="ter2">
+        <span>
+          <target id="t_2"/>
+        </span>
+      </t>
+      <t id="ter3">
+        <span>
+          <target id="t_3"/>
+        </span>
+      </t>
+      <t id="ter4">
+        <span>
+          <target id="t_4"/>
+        </span>
+      </t>
+      <t id="ter5">
+        <span>
+          <target id="t_5"/>
+        </span>
+      </t>
+      <edge id="tre0" from="nter1" to="nter0">
+        <!--  tre0  top <- smain -->
+      </edge>
+      <edge id="tre1" from="nter2" to="nter1">
+        <!--  tre1  smain <- np -->
+      </edge>
+      <edge id="tre2" from="nter3" to="nter2">
+        <!--  tre2  np <- det -->
+      </edge>
+      <edge id="tre3" from="ter0" to="nter3">
+        <!--  tre3  det <- mijn -->
+      </edge>
+      <edge id="tre4" from="nter4" to="nter2" head="yes">
+        <!--  tre4  np <- noun -->
+      </edge>
+      <edge id="tre5" from="ter1" to="nter4">
+        <!--  tre5  noun <- hond -->
+      </edge>
+      <edge id="tre6" from="nter5" to="nter1" head="yes">
+        <!--  tre6  smain <- verb -->
+      </edge>
+      <edge id="tre7" from="ter2" to="nter5">
+        <!--  tre7  verb <- ben -->
+      </edge>
+      <edge id="tre8" from="nter6" to="nter1">
+        <!--  tre8  smain <- ap -->
+      </edge>
+      <edge id="tre9" from="nter7" to="nter6">
+        <!--  tre9  ap <- adj -->
+      </edge>
+      <edge id="tre10" from="ter3" to="nter7">
+        <!--  tre10  adj <- erg -->
+      </edge>
+      <edge id="tre11" from="nter8" to="nter6" head="yes">
+        <!--  tre11  ap <- adj -->
+      </edge>
+      <edge id="tre12" from="ter4" to="nter8">
+        <!--  tre12  adj <- mooi -->
+      </edge>
+      <edge id="tre13" from="nter9" to="nter0">
+        <!--  tre13  top <- punct -->
+      </edge>
+      <edge id="tre14" from="ter5" to="nter9">
+        <!--  tre14  punct <- . -->
+      </edge>
+    </tree>
+    <tree>
+      <nt id="nter10" label="top"/>
+      <nt id="nter11" label="smain"/>
+      <nt id="nter12" label="np"/>
+      <nt id="nter13" label="det"/>
+      <nt id="nter14" label="noun"/>
+      <nt id="nter15" label="verb"/>
+      <nt id="nter16" label="ap"/>
+      <nt id="nter17" label="adj"/>
+      <nt id="nter18" label="adj"/>
+      <nt id="nter19" label="punct"/>
+      <t id="ter6">
+        <span>
+          <target id="t_6"/>
+        </span>
+      </t>
+      <t id="ter7">
+        <span>
+          <target id="t_7"/>
+        </span>
+      </t>
+      <t id="ter8">
+        <span>
+          <target id="t_8"/>
+        </span>
+      </t>
+      <t id="ter9">
+        <span>
+          <target id="t_9"/>
+        </span>
+      </t>
+      <t id="ter10">
+        <span>
+          <target id="t_10"/>
+        </span>
+      </t>
+      <t id="ter11">
+        <span>
+          <target id="t_11"/>
+        </span>
+      </t>
+      <edge id="tre15" from="nter11" to="nter10">
+        <!--  tre15  top <- smain -->
+      </edge>
+      <edge id="tre16" from="nter12" to="nter11">
+        <!--  tre16  smain <- np -->
+      </edge>
+      <edge id="tre17" from="nter13" to="nter12">
+        <!--  tre17  np <- det -->
+      </edge>
+      <edge id="tre18" from="ter6" to="nter13">
+        <!--  tre18  det <- mijn -->
+      </edge>
+      <edge id="tre19" from="nter14" to="nter12" head="yes">
+        <!--  tre19  np <- noun -->
+      </edge>
+      <edge id="tre20" from="ter7" to="nter14">
+        <!--  tre20  noun <- huis -->
+      </edge>
+      <edge id="tre21" from="nter15" to="nter11" head="yes">
+        <!--  tre21  smain <- verb -->
+      </edge>
+      <edge id="tre22" from="ter8" to="nter15">
+        <!--  tre22  verb <- ben -->
+      </edge>
+      <edge id="tre23" from="nter16" to="nter11">
+        <!--  tre23  smain <- ap -->
+      </edge>
+      <edge id="tre24" from="nter17" to="nter16">
+        <!--  tre24  ap <- adj -->
+      </edge>
+      <edge id="tre25" from="ter9" to="nter17">
+        <!--  tre25  adj <- erg -->
+      </edge>
+      <edge id="tre26" from="nter18" to="nter16" head="yes">
+        <!--  tre26  ap <- adj -->
+      </edge>
+      <edge id="tre27" from="ter10" to="nter18">
+        <!--  tre27  adj <- mooi -->
+      </edge>
+      <edge id="tre28" from="nter19" to="nter10">
+        <!--  tre28  top <- punct -->
+      </edge>
+      <edge id="tre29" from="ter11" to="nter19">
+        <!--  tre29  punct <- . -->
+      </edge>
+    </tree>
+  </constituency>
+  <deps>
+    <dep from="t_2" to="t_1" rfunc="hd/su">
+      <!-- hd/su(verb:ben,noun:hond) -->
+    </dep>
+    <dep from="t_1" to="t_0" rfunc="hd/det">
+      <!-- hd/det(noun:hond,det:mijn) -->
+    </dep>
+    <dep from="t_2" to="t_4" rfunc="hd/predc">
+      <!-- hd/predc(verb:ben,adj:mooi) -->
+    </dep>
+    <dep from="t_4" to="t_3" rfunc="hd/mod">
+      <!-- hd/mod(adj:mooi,adj:erg) -->
+    </dep>
+    <dep from="t_2" to="t_5" rfunc="-- / --">
+      <!-- - - / - -(verb:ben,punct:.) -->
+    </dep>
+    <dep from="t_8" to="t_7" rfunc="hd/su">
+      <!-- hd/su(verb:ben,noun:huis) -->
+    </dep>
+    <dep from="t_7" to="t_6" rfunc="hd/det">
+      <!-- hd/det(noun:huis,det:mijn) -->
+    </dep>
+    <dep from="t_8" to="t_10" rfunc="hd/predc">
+      <!-- hd/predc(verb:ben,adj:mooi) -->
+    </dep>
+    <dep from="t_10" to="t_9" rfunc="hd/mod">
+      <!-- hd/mod(adj:mooi,adj:erg) -->
+    </dep>
+    <dep from="t_8" to="t_11" rfunc="-- / --">
+      <!-- - - / - -(verb:ben,punct:.) -->
+    </dep>
+  </deps>
+</KAF>

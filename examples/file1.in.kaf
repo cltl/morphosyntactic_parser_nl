@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<KAF xml:lang="nl" version="1">
+  <kafHeader>
+    <linguisticProcessors layer="text">
+      <lp timestamp="*" version="1.0" name="Open-nlp sentence splitter"/>
+      <lp timestamp="*" version="1.0" name="Open-nlp tokenizer"/>
+    </linguisticProcessors>
+  </kafHeader>
+  <text>
+    <wf wid="w1" sent="1">Mijn</wf>
+    <wf wid="w2" sent="1">hond</wf>
+    <wf wid="w3" sent="1">is</wf>
+    <wf wid="w4" sent="1">erg</wf>
+    <wf wid="w5" sent="1">mooi</wf>
+    <wf wid="w6" sent="1">.</wf>
+    <wf wid="w7" sent="2">Mijn</wf>
+    <wf wid="w8" sent="2">huis</wf>
+    <wf wid="w9" sent="2">is</wf>
+    <wf wid="w10" sent="2">erg</wf>
+    <wf wid="w11" sent="2">mooi</wf>
+    <wf wid="w12" sent="2">.</wf>
+  </text>
+</KAF>

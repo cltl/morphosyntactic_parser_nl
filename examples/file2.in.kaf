@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<KAF xml:lang="nl">
+  <kafHeader>
+    <linguisticProcessors layer="text">
+      <lp timestamp="*" version="1.0" name="Open-nlp sentence splitter"/>
+      <lp timestamp="*" version="1.0" name="Open-nlp tokenizer"/>
+    </linguisticProcessors>
+  </kafHeader>
+  <text>
+    <wf wid="w_1" sent="1">Beatrix</wf>
+    <wf wid="w_2" sent="1">Wilhelmina</wf>
+    <wf wid="w_3" sent="1">Armgard</wf>
+    <wf wid="w_4" sent="1">van</wf>
+    <wf wid="w_5" sent="1">Oranje-Nassau</wf>
+    <wf wid="w_6" sent="1">(</wf>
+    <wf wid="w_7" sent="1">Baarn</wf>
+    <wf wid="w_8" sent="1">,</wf>
+    <wf wid="w_9" sent="1">31</wf>
+    <wf wid="w_10" sent="1">januari</wf>
+    <wf wid="w_11" sent="1">1938</wf>
+    <wf wid="w_12" sent="1">)</wf>
+    <wf wid="w_13" sent="1">is</wf>
+    <wf wid="w_14" sent="1">sinds</wf>
+    <wf wid="w_15" sent="1">30</wf>
+    <wf wid="w_16" sent="1">april</wf>
+    <wf wid="w_17" sent="1">1980</wf>
+    <wf wid="w_18" sent="1">Koningin</wf>
+    <wf wid="w_19" sent="1">der</wf>
+    <wf wid="w_20" sent="1">Nederlanden</wf>
+    <wf wid="w_21" sent="1">.</wf>
+    <wf wid="w_22" sent="2">Zij</wf>
+    <wf wid="w_23" sent="2">regeert</wf>
+    <wf wid="w_24" sent="2">onder</wf>
+    <wf wid="w_25" sent="2">de</wf>
+    <wf wid="w_26" sent="2">naam</wf>
+    <wf wid="w_27" sent="2">Beatrix</wf>
+    <wf wid="w_28" sent="2">en</wf>
+    <wf wid="w_29" sent="2">draagt</wf>
+    <wf wid="w_30" sent="2">onder</wf>
+    <wf wid="w_31" sent="2">meer</wf>
+    <wf wid="w_32" sent="2">de</wf>
+    <wf wid="w_33" sent="2">titels</wf>
+    <wf wid="w_34" sent="2">prinses</wf>
+    <wf wid="w_35" sent="2">van</wf>
+    <wf wid="w_36" sent="2">Oranje-Nassau</wf>
+    <wf wid="w_37" sent="2">,</wf>
+    <wf wid="w_38" sent="2">prinses</wf>
+    <wf wid="w_39" sent="2">der</wf>
+    <wf wid="w_40" sent="2">Nederlanden</wf>
+    <wf wid="w_41" sent="2">en</wf>
+    <wf wid="w_42" sent="2">prinses</wf>
+    <wf wid="w_43" sent="2">van</wf>
+    <wf wid="w_44" sent="2">Lippe-Biesterfeld</wf>
+    <wf wid="w_45" sent="2">.</wf>
+    <wf wid="w_46" sent="3">Beatrix</wf>
+    <wf wid="w_47" sent="3">is</wf>
+    <wf wid="w_48" sent="3">sinds</wf>
+    <wf wid="w_49" sent="3">2002</wf>
+    <wf wid="w_50" sent="3">weduwe</wf>
+    <wf wid="w_51" sent="3">van</wf>
+    <wf wid="w_52" sent="3">prins</wf>
+    <wf wid="w_53" sent="3">Claus</wf>
+    <wf wid="w_54" sent="3">van</wf>
+    <wf wid="w_55" sent="3">Amsberg</wf>
+    <wf wid="w_56" sent="3">.</wf>
+  </text>
+</KAF>
