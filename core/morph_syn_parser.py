@@ -108,7 +108,7 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
         count_terms+=1
         term_ids.append(new_term_id)
         alpino_node = map_token_begin_node[str(num_token)]
-        term_obj = Cterm()
+        term_obj = Cterm(type=knaf_obj.get_type())
         term_obj.set_id(new_term_id)
         new_span = Cspan()
         new_span.create_from_ids([token_id])

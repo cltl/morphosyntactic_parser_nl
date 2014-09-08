@@ -1,91 +1,91 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<KAF xml:lang="nl" version="1">
-  <kafHeader>
+<NAF xml:lang="nl" version="1">
+  <nafHeader>
     <linguisticProcessors layer="text">
       <lp timestamp="*" version="1.0" name="Open-nlp sentence splitter"/>
       <lp timestamp="*" version="1.0" name="Open-nlp tokenizer"/>
     </linguisticProcessors>
     <linguisticProcessors layer="terms">
-      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:25:41CEST"/>
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:26:22CEST"/>
     </linguisticProcessors>
     <linguisticProcessors layer="constituents">
-      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:25:41CEST"/>
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:26:22CEST"/>
     </linguisticProcessors>
     <linguisticProcessors layer="deps">
-      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:25:41CEST"/>
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:26:22CEST"/>
     </linguisticProcessors>
-  </kafHeader>
+  </nafHeader>
   <text>
-    <wf wid="w1" sent="1">Mijn</wf>
-    <wf wid="w2" sent="1">hond</wf>
-    <wf wid="w3" sent="1">is</wf>
-    <wf wid="w4" sent="1">erg</wf>
-    <wf wid="w5" sent="1">mooi</wf>
-    <wf wid="w6" sent="1">.</wf>
-    <wf wid="w7" sent="2">Mijn</wf>
-    <wf wid="w8" sent="2">huis</wf>
-    <wf wid="w9" sent="2">is</wf>
-    <wf wid="w10" sent="2">erg</wf>
-    <wf wid="w11" sent="2">mooi</wf>
-    <wf wid="w12" sent="2">.</wf>
+    <wf sent="1" id="w1">Mijn</wf>
+    <wf sent="1" id="w2">hond</wf>
+    <wf sent="1" id="w3">is</wf>
+    <wf sent="1" id="w4">erg</wf>
+    <wf sent="1" id="w5">mooi</wf>
+    <wf sent="1" id="w6">.</wf>
+    <wf sent="2" id="w7">Mijn</wf>
+    <wf sent="2" id="w8">huis</wf>
+    <wf sent="2" id="w9">is</wf>
+    <wf sent="2" id="w10">erg</wf>
+    <wf sent="2" id="w11">mooi</wf>
+    <wf sent="2" id="w12">.</wf>
   </text>
   <terms>
-    <term tid="t_0" lemma="mijn" pos="det#VNW(bez,det,stan,vol,1,ev,prenom,zonder,agr)" morphofeat="determiner(pron)">
+    <term id="t_0" lemma="mijn" pos="det#VNW(bez,det,stan,vol,1,ev,prenom,zonder,agr)" morphofeat="determiner(pron)">
       <span>
         <target id="w1"/>
       </span>
     </term>
-    <term tid="t_1" lemma="hond" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+    <term id="t_1" lemma="hond" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
       <span>
         <target id="w2"/>
       </span>
     </term>
-    <term tid="t_2" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
+    <term id="t_2" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
       <span>
         <target id="w3"/>
       </span>
     </term>
-    <term tid="t_3" lemma="erg" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+    <term id="t_3" lemma="erg" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
       <span>
         <target id="w4"/>
       </span>
     </term>
-    <term tid="t_4" lemma="mooi" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+    <term id="t_4" lemma="mooi" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
       <span>
         <target id="w5"/>
       </span>
     </term>
-    <term tid="t_5" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
+    <term id="t_5" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
       <span>
         <target id="w6"/>
       </span>
     </term>
-    <term tid="t_6" lemma="mijn" pos="det#VNW(bez,det,stan,vol,1,ev,prenom,zonder,agr)" morphofeat="determiner(pron)">
+    <term id="t_6" lemma="mijn" pos="det#VNW(bez,det,stan,vol,1,ev,prenom,zonder,agr)" morphofeat="determiner(pron)">
       <span>
         <target id="w7"/>
       </span>
     </term>
-    <term tid="t_7" lemma="huis" pos="noun#N(soort,ev,basis,onz,stan)" morphofeat="noun(het,count,sg)">
+    <term id="t_7" lemma="huis" pos="noun#N(soort,ev,basis,onz,stan)" morphofeat="noun(het,count,sg)">
       <span>
         <target id="w8"/>
       </span>
     </term>
-    <term tid="t_8" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
+    <term id="t_8" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
       <span>
         <target id="w9"/>
       </span>
     </term>
-    <term tid="t_9" lemma="erg" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+    <term id="t_9" lemma="erg" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
       <span>
         <target id="w10"/>
       </span>
     </term>
-    <term tid="t_10" lemma="mooi" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
+    <term id="t_10" lemma="mooi" pos="adj#ADJ(vrij,basis,zonder)" morphofeat="adjective(no_e(adv))">
       <span>
         <target id="w11"/>
       </span>
     </term>
-    <term tid="t_11" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
+    <term id="t_11" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
       <span>
         <target id="w12"/>
       </span>
@@ -299,4 +299,4 @@
       <!-- - - / - -(verb:ben,punct:.) -->
     </dep>
   </deps>
-</KAF>
+</NAF>

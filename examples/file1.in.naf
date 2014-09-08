@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<NAF xml:lang="nl" version="1">
+  <nafHeader>
+    <linguisticProcessors layer="text">
+      <lp timestamp="*" version="1.0" name="Open-nlp sentence splitter"/>
+      <lp timestamp="*" version="1.0" name="Open-nlp tokenizer"/>
+    </linguisticProcessors>
+  </nafHeader>
+  <text>
+    <wf sent="1" id="w1">Mijn</wf>
+    <wf sent="1" id="w2">hond</wf>
+    <wf sent="1" id="w3">is</wf>
+    <wf sent="1" id="w4">erg</wf>
+    <wf sent="1" id="w5">mooi</wf>
+    <wf sent="1" id="w6">.</wf>
+    <wf sent="2" id="w7">Mijn</wf>
+    <wf sent="2" id="w8">huis</wf>
+    <wf sent="2" id="w9">is</wf>
+    <wf sent="2" id="w10">erg</wf>
+    <wf sent="2" id="w11">mooi</wf>
+    <wf sent="2" id="w12">.</wf>
+  </text>
+</NAF>

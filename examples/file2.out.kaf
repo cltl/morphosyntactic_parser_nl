@@ -6,13 +6,13 @@
       <lp timestamp="*" version="1.0" name="Open-nlp tokenizer"/>
     </linguisticProcessors>
     <linguisticProcessors layer="terms">
-      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-05T14:15:25CEST"/>
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:26:04CEST"/>
     </linguisticProcessors>
     <linguisticProcessors layer="constituents">
-      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-05T14:15:25CEST"/>
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:26:04CEST"/>
     </linguisticProcessors>
     <linguisticProcessors layer="deps">
-      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-05T14:15:25CEST"/>
+      <lp name="Morphosyntactic parser based on Alpino" version="0.1_05sept2014" timestamp="2014-09-08T09:26:04CEST"/>
     </linguisticProcessors>
   </kafHeader>
   <text>
@@ -74,282 +74,282 @@
     <wf wid="w_56" sent="3">.</wf>
   </text>
   <terms>
-    <term id="t_0" lemma="Beatrix" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'ORG')">
+    <term tid="t_0" lemma="Beatrix" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'ORG')">
       <span>
         <target id="w_1"/>
       </span>
     </term>
-    <term id="t_1" lemma="Wilhelmina" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'ORG')">
+    <term tid="t_1" lemma="Wilhelmina" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'ORG')">
       <span>
         <target id="w_2"/>
       </span>
     </term>
-    <term id="t_2" lemma="Armgard" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'ORG')">
+    <term tid="t_2" lemma="Armgard" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'ORG')">
       <span>
         <target id="w_3"/>
       </span>
     </term>
-    <term id="t_3" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
+    <term tid="t_3" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
       <span>
         <target id="w_4"/>
       </span>
     </term>
-    <term id="t_4" lemma="Oranje-Nassau" pos="name#N(eigen,ev,basis,onz,stan)" morphofeat="proper_name(both,'ORG')">
+    <term tid="t_4" lemma="Oranje-Nassau" pos="name#N(eigen,ev,basis,onz,stan)" morphofeat="proper_name(both,'ORG')">
       <span>
         <target id="w_5"/>
       </span>
     </term>
-    <term id="t_5" lemma="(" pos="punct#LET()" morphofeat="punct(haak_open)">
+    <term tid="t_5" lemma="(" pos="punct#LET()" morphofeat="punct(haak_open)">
       <span>
         <target id="w_6"/>
       </span>
     </term>
-    <term id="t_6" lemma="Baarn" pos="name#N(eigen,ev,basis,onz,stan)" morphofeat="proper_name(both,'LOC')">
+    <term tid="t_6" lemma="Baarn" pos="name#N(eigen,ev,basis,onz,stan)" morphofeat="proper_name(both,'LOC')">
       <span>
         <target id="w_7"/>
       </span>
     </term>
-    <term id="t_7" lemma="," pos="punct#LET()" morphofeat="punct(komma)">
+    <term tid="t_7" lemma="," pos="punct#LET()" morphofeat="punct(komma)">
       <span>
         <target id="w_8"/>
       </span>
     </term>
-    <term id="t_8" lemma="31" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
+    <term tid="t_8" lemma="31" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
       <span>
         <target id="w_9"/>
       </span>
     </term>
-    <term id="t_9" lemma="januari" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
+    <term tid="t_9" lemma="januari" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
       <span>
         <target id="w_10"/>
       </span>
     </term>
-    <term id="t_10" lemma="1938" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
+    <term tid="t_10" lemma="1938" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
       <span>
         <target id="w_11"/>
       </span>
     </term>
-    <term id="t_11" lemma=")" pos="punct#LET()" morphofeat="punct(haak_sluit)">
+    <term tid="t_11" lemma=")" pos="punct#LET()" morphofeat="punct(haak_sluit)">
       <span>
         <target id="w_12"/>
       </span>
     </term>
-    <term id="t_12" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
+    <term tid="t_12" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
       <span>
         <target id="w_13"/>
       </span>
     </term>
-    <term id="t_13" lemma="sinds" pos="prep#VZ(init)" morphofeat="preposition(sinds,[])">
+    <term tid="t_13" lemma="sinds" pos="prep#VZ(init)" morphofeat="preposition(sinds,[])">
       <span>
         <target id="w_14"/>
       </span>
     </term>
-    <term id="t_14" lemma="30" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
+    <term tid="t_14" lemma="30" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
       <span>
         <target id="w_15"/>
       </span>
     </term>
-    <term id="t_15" lemma="april" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
+    <term tid="t_15" lemma="april" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
       <span>
         <target id="w_16"/>
       </span>
     </term>
-    <term id="t_16" lemma="1980" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
+    <term tid="t_16" lemma="1980" pos="noun#TW(hoofd,vrij)" morphofeat="tmp_np">
       <span>
         <target id="w_17"/>
       </span>
     </term>
-    <term id="t_17" lemma="Koningin" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'LOC')">
+    <term tid="t_17" lemma="Koningin" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'LOC')">
       <span>
         <target id="w_18"/>
       </span>
     </term>
-    <term id="t_18" lemma="der" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'LOC')">
+    <term tid="t_18" lemma="der" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'LOC')">
       <span>
         <target id="w_19"/>
       </span>
     </term>
-    <term id="t_19" lemma="Nederlanden" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'LOC')">
+    <term tid="t_19" lemma="Nederlanden" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'LOC')">
       <span>
         <target id="w_20"/>
       </span>
     </term>
-    <term id="t_20" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
+    <term tid="t_20" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
       <span>
         <target id="w_21"/>
       </span>
     </term>
-    <term id="t_21" lemma="zij" pos="pron#VNW(pers,pron,nomin,vol,3v,ev,fem)" morphofeat="pronoun(nwh,thi,both,de,nom,def)">
+    <term tid="t_21" lemma="zij" pos="pron#VNW(pers,pron,nomin,vol,3v,ev,fem)" morphofeat="pronoun(nwh,thi,both,de,nom,def)">
       <span>
         <target id="w_22"/>
       </span>
     </term>
-    <term id="t_22" lemma="regeer" pos="verb#WW(pv,tgw,met-t)" morphofeat="verb(hebben,sg3,intransitive)">
+    <term tid="t_22" lemma="regeer" pos="verb#WW(pv,tgw,met-t)" morphofeat="verb(hebben,sg3,intransitive)">
       <span>
         <target id="w_23"/>
       </span>
     </term>
-    <term id="t_23" lemma="onder" pos="prep#VZ(init)" morphofeat="preposition(onder,[door,vandaan])">
+    <term tid="t_23" lemma="onder" pos="prep#VZ(init)" morphofeat="preposition(onder,[door,vandaan])">
       <span>
         <target id="w_24"/>
       </span>
     </term>
-    <term id="t_24" lemma="de" pos="det#LID(bep,stan,rest)" morphofeat="determiner(de)">
+    <term tid="t_24" lemma="de" pos="det#LID(bep,stan,rest)" morphofeat="determiner(de)">
       <span>
         <target id="w_25"/>
       </span>
     </term>
-    <term id="t_25" lemma="naam" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+    <term tid="t_25" lemma="naam" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
       <span>
         <target id="w_26"/>
       </span>
     </term>
-    <term id="t_26" lemma="Beatrix" pos="name#N(eigen,ev,basis,zijd,stan)" morphofeat="proper_name(both,'PER')">
+    <term tid="t_26" lemma="Beatrix" pos="name#N(eigen,ev,basis,zijd,stan)" morphofeat="proper_name(both,'PER')">
       <span>
         <target id="w_27"/>
       </span>
     </term>
-    <term id="t_27" lemma="en" pos="vg#VG(neven)" morphofeat="conj(en)">
+    <term tid="t_27" lemma="en" pos="vg#VG(neven)" morphofeat="conj(en)">
       <span>
         <target id="w_28"/>
       </span>
     </term>
-    <term id="t_28" lemma="draag" pos="verb#WW(pv,tgw,met-t)" morphofeat="verb(hebben,sg3,transitive)">
+    <term tid="t_28" lemma="draag" pos="verb#WW(pv,tgw,met-t)" morphofeat="verb(hebben,sg3,transitive)">
       <span>
         <target id="w_29"/>
       </span>
     </term>
-    <term id="t_29" lemma="onder" pos="adv#VZ(init)" morphofeat="adverb">
+    <term tid="t_29" lemma="onder" pos="adv#VZ(init)" morphofeat="adverb">
       <span>
         <target id="w_30"/>
       </span>
     </term>
-    <term id="t_30" lemma="meer" pos="adv#VNW(onbep,grad,stan,vrij,zonder,comp)" morphofeat="adverb">
+    <term tid="t_30" lemma="meer" pos="adv#VNW(onbep,grad,stan,vrij,zonder,comp)" morphofeat="adverb">
       <span>
         <target id="w_31"/>
       </span>
     </term>
-    <term id="t_31" lemma="de" pos="det#LID(bep,stan,rest)" morphofeat="determiner(de)">
+    <term tid="t_31" lemma="de" pos="det#LID(bep,stan,rest)" morphofeat="determiner(de)">
       <span>
         <target id="w_32"/>
       </span>
     </term>
-    <term id="t_32" lemma="titel" pos="noun#N(soort,mv,basis)" morphofeat="noun(de,count,pl,app_measure)">
+    <term tid="t_32" lemma="titel" pos="noun#N(soort,mv,basis)" morphofeat="noun(de,count,pl,app_measure)">
       <span>
         <target id="w_33"/>
       </span>
     </term>
-    <term id="t_33" lemma="prinses" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+    <term tid="t_33" lemma="prinses" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
       <span>
         <target id="w_34"/>
       </span>
     </term>
-    <term id="t_34" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
+    <term tid="t_34" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
       <span>
         <target id="w_35"/>
       </span>
     </term>
-    <term id="t_35" lemma="Oranje-Nassau" pos="name#N(eigen,ev,basis,onz,stan)" morphofeat="proper_name(both,'ORG')">
+    <term tid="t_35" lemma="Oranje-Nassau" pos="name#N(eigen,ev,basis,onz,stan)" morphofeat="proper_name(both,'ORG')">
       <span>
         <target id="w_36"/>
       </span>
     </term>
-    <term id="t_36" lemma="," pos="punct#LET()" morphofeat="punct(komma)">
+    <term tid="t_36" lemma="," pos="punct#LET()" morphofeat="punct(komma)">
       <span>
         <target id="w_37"/>
       </span>
     </term>
-    <term id="t_37" lemma="prinses" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+    <term tid="t_37" lemma="prinses" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
       <span>
         <target id="w_38"/>
       </span>
     </term>
-    <term id="t_38" lemma="de" pos="det#LID(bep,gen,rest3)" morphofeat="determiner(der)">
+    <term tid="t_38" lemma="de" pos="det#LID(bep,gen,rest3)" morphofeat="determiner(der)">
       <span>
         <target id="w_39"/>
       </span>
     </term>
-    <term id="t_39" lemma="Nederlanden" pos="name#N(eigen,mv,basis)" morphofeat="proper_name(both,'LOC')">
+    <term tid="t_39" lemma="Nederlanden" pos="name#N(eigen,mv,basis)" morphofeat="proper_name(both,'LOC')">
       <span>
         <target id="w_40"/>
       </span>
     </term>
-    <term id="t_40" lemma="en" pos="vg#VG(neven)" morphofeat="conj(en)">
+    <term tid="t_40" lemma="en" pos="vg#VG(neven)" morphofeat="conj(en)">
       <span>
         <target id="w_41"/>
       </span>
     </term>
-    <term id="t_41" lemma="prinses" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+    <term tid="t_41" lemma="prinses" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
       <span>
         <target id="w_42"/>
       </span>
     </term>
-    <term id="t_42" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
+    <term tid="t_42" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
       <span>
         <target id="w_43"/>
       </span>
     </term>
-    <term id="t_43" lemma="Lippe-Biesterfeld" pos="name#N(eigen,ev,basis,zijd,stan)" morphofeat="proper_name(both,'ORG')">
+    <term tid="t_43" lemma="Lippe-Biesterfeld" pos="name#N(eigen,ev,basis,zijd,stan)" morphofeat="proper_name(both,'ORG')">
       <span>
         <target id="w_44"/>
       </span>
     </term>
-    <term id="t_44" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
+    <term tid="t_44" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
       <span>
         <target id="w_45"/>
       </span>
     </term>
-    <term id="t_45" lemma="Beatrix" pos="name#N(eigen,ev,basis,zijd,stan)" morphofeat="proper_name(both,'PER')">
+    <term tid="t_45" lemma="Beatrix" pos="name#N(eigen,ev,basis,zijd,stan)" morphofeat="proper_name(both,'PER')">
       <span>
         <target id="w_46"/>
       </span>
     </term>
-    <term id="t_46" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
+    <term tid="t_46" lemma="ben" pos="verb#WW(pv,tgw,ev)" morphofeat="verb(unacc,sg_heeft,copula)">
       <span>
         <target id="w_47"/>
       </span>
     </term>
-    <term id="t_47" lemma="sinds" pos="prep#VZ(init)" morphofeat="preposition(sinds,[])">
+    <term tid="t_47" lemma="sinds" pos="prep#VZ(init)" morphofeat="preposition(sinds,[])">
       <span>
         <target id="w_48"/>
       </span>
     </term>
-    <term id="t_48" lemma="2002" pos="noun#TW(hoofd,vrij)" morphofeat="np(year)">
+    <term tid="t_48" lemma="2002" pos="noun#TW(hoofd,vrij)" morphofeat="np(year)">
       <span>
         <target id="w_49"/>
       </span>
     </term>
-    <term id="t_49" lemma="weduwe" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+    <term tid="t_49" lemma="weduwe" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
       <span>
         <target id="w_50"/>
       </span>
     </term>
-    <term id="t_50" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
+    <term tid="t_50" lemma="van" pos="prep#VZ(init)" morphofeat="preposition(van,[af,uit,vandaan,[af,aan]])">
       <span>
         <target id="w_51"/>
       </span>
     </term>
-    <term id="t_51" lemma="prins" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
+    <term tid="t_51" lemma="prins" pos="noun#N(soort,ev,basis,zijd,stan)" morphofeat="noun(de,count,sg)">
       <span>
         <target id="w_52"/>
       </span>
     </term>
-    <term id="t_52" lemma="Claus" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'PER')">
+    <term tid="t_52" lemma="Claus" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'PER')">
       <span>
         <target id="w_53"/>
       </span>
     </term>
-    <term id="t_53" lemma="van" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'PER')">
+    <term tid="t_53" lemma="van" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'PER')">
       <span>
         <target id="w_54"/>
       </span>
     </term>
-    <term id="t_54" lemma="Amsberg" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'PER')">
+    <term tid="t_54" lemma="Amsberg" pos="name#SPEC(deeleigen)" morphofeat="proper_name(both,'PER')">
       <span>
         <target id="w_55"/>
       </span>
     </term>
-    <term id="t_55" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
+    <term tid="t_55" lemma="." pos="punct#LET()" morphofeat="punct(punt)">
       <span>
         <target id="w_56"/>
       </span>
