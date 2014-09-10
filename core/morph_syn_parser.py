@@ -48,6 +48,12 @@ def load_sentences(in_obj):
         sentences.append(current_sent)
     return sentences
 
+def get_term_type(pos):
+    if pos in ['det','pron','prep','vg','conj' ]:
+        return 'close'
+    else:
+        return 'open'
+
 def node_to_penn(node,map_token_begin_node):
     children = node.getchildren()
     if len(children) == 0:
@@ -115,8 +121,14 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
         term_obj.set_span(new_span)
         term_obj.set_lemma(alpino_node.get('lemma','unknown'))
         lemma_for_termid[new_term_id] = alpino_node.get('lemma','unknown')
-        term_obj.set_pos(alpino_node.get('pos','unknown')+'#'+alpino_node.get('postag','unknown'))
-        term_obj.set_morphofeat(alpino_node.get('frame','unknown'))
+
+        alppos = alpino_node.get('pos','unknown')
+        term_obj.set_pos(alppos)
+        term_obj.set_morphofeat(alpino_node.get('postag','unknown'))
+        termtype = get_term_type(alppos)
+        term_obj.set_type(termtype)
+        knaf_obj.add_term(term_obj)
+
         knaf_obj.add_term(term_obj)
     ##########################################
         
