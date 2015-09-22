@@ -4,7 +4,7 @@ import os
 import sys
 import tempfile
 import shutil
-
+import argparse
 
 from KafNafParserPy import *
 from subprocess import Popen,PIPE
@@ -12,8 +12,8 @@ from lxml import etree
 from convert_penn_to_kaf import convert_penn_to_knaf_with_numtokens
 from alpino_dependency import Calpino_dependency
 
-last_modified='05sept2014'
-version="0.1"
+last_modified='22sept2015'
+version="0.2"
 this_name = 'Morphosyntactic parser based on Alpino'
 
 ###############################################
@@ -163,7 +163,7 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
     # we return the counters for terms and consituent elements to keep generating following identifiers for next sentnces
     return count_terms,cnt_t,cnt_nt,cnt_edge
 
-def run_morph_syn_parser(input_file, output_file):    
+def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):    
     
     set_up_alpino()
 
@@ -185,8 +185,13 @@ def run_morph_syn_parser(input_file, output_file):
     
     # Call to Alpinoo and generate the XML files
     alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
-    cmd = alpino_bin+' end_hook=xml -flag treebank '+out_folder_alp+' -parse'
+    cmd = alpino_bin
+    if max_min_per_sent is not None:
+        #max_min_per_sent is minutes
+        cmd = cmd+' user_max=%d' % int(max_min_per_sent * 60 * 1000)  #converted to milliseconds
+    cmd = cmd+' end_hook=xml -flag treebank '+out_folder_alp+' -parse'
     print>>sys.stderr,'Calling to Alpino at',os.environ['ALPINO_HOME'],'with',len(sentences),'sentences...'
+    ##print>>sys.stderr,'CMD:%s' % cmd
     alpino_pro = Popen(cmd,stdout=sys.stdout,stdin=PIPE,stderr=PIPE,shell=True)
     for sentence in sentences:
         for token,token_id in sentence:
@@ -239,5 +244,12 @@ def run_morph_syn_parser(input_file, output_file):
 if __name__ == '__main__':
     input_file = sys.stdin
     output_file = sys.stdout
-    run_morph_syn_parser(input_file,output_file)
+    user_max = None
+    
+    parser = argparse.ArgumentParser(description='Morphosyntactic parser based on Alpino', version=version)
+    parser.add_argument('-t', '--time', dest='max_minutes', type=float, help='Maximum number of minutes per sentence. Sentences that take longer will be skipped and not parsed (value must be a float)')
+
+    args = parser.parse_args()
+
+    run_morph_syn_parser(input_file,output_file, max_min_per_sent=args.max_minutes)
 
