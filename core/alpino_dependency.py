@@ -60,5 +60,5 @@ class Calpino_dependency:
                     
                     dependencies.append(my_dep)
         except Exception as e:
-            print>>sys,stderr,str(e)
+            print>>sys.stderr,str(e)
         return dependencies

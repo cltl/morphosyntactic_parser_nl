@@ -148,7 +148,7 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
     print>>sys.stderr,'  Creating the dependency layer...'
     alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
     cmd = alpino_bin+' -treebank_triples '+xml_file
-    alpino_pro = Popen(cmd,stdout=PIPE,stdin=PIPE,stderr=PIPE,shell=True)
+    alpino_pro = Popen(cmd,stdout=PIPE,stdin=PIPE,stderr=sys.stderr,shell=True)
     alpino_pro.wait()
     
     for line in alpino_pro.stdout:
