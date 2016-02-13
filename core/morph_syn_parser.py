@@ -7,7 +7,7 @@ import shutil
 import argparse
 
 from KafNafParserPy import *
-from subprocess import Popen,PIPE
+from subprocess import Popen,PIPE, check_output
 from lxml import etree
 from convert_penn_to_kaf import convert_penn_to_knaf_with_numtokens
 from alpino_dependency import Calpino_dependency
@@ -147,11 +147,10 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
     # Call to Alpino with the --treebank option to get the dependencies out of the XML
     print>>sys.stderr,'  Creating the dependency layer...'
     alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
-    cmd = alpino_bin+' -treebank_triples '+xml_file
-    alpino_pro = Popen(cmd,stdout=PIPE,stdin=PIPE,stderr=sys.stderr,shell=True)
-    alpino_pro.wait()
+    cmd = [alpino_bin, '-treebank_triples', xml_file]
+    output = check_output(cmd)
     
-    for line in alpino_pro.stdout:
+    for line in output.splitlines():
         line = line.strip().decode('utf-8')
         my_dep = Calpino_dependency(line)
         if my_dep.is_ok():
