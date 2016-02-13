@@ -191,7 +191,7 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
     cmd = cmd+' end_hook=xml -flag treebank '+out_folder_alp+' -parse'
     print>>sys.stderr,'Calling to Alpino at',os.environ['ALPINO_HOME'],'with',len(sentences),'sentences...'
     ##print>>sys.stderr,'CMD:%s' % cmd
-    alpino_pro = Popen(cmd,stdout=sys.stdout,stdin=PIPE,stderr=PIPE,shell=True)
+    alpino_pro = Popen(cmd, stdin=PIPE, shell=True)
     for sentence in sentences:
         for token,token_id in sentence:
             token = token.replace('[','\[')
@@ -200,7 +200,8 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
             alpino_pro.stdin.write(token.encode('utf-8')+' ')
         alpino_pro.stdin.write('\n')
     alpino_pro.stdin.close()
-    alpino_pro.wait()
+    if alpino_pro.wait() != 0:
+        raise Exception("Call to alpino failed (see logs): %s" % cmd)
     ####################
     
     # Process the XML files
