@@ -1,4 +1,6 @@
 import re
+import sys
+
 from KafNafParserPy import Cdependency
 
 '''
