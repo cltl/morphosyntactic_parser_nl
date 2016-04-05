@@ -148,14 +148,19 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
     alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
     cmd = [alpino_bin, '-treebank_triples', xml_file]
     output = check_output(cmd)
-    
+    has_dependencies = False
     for line in output.splitlines():
         line = line.strip().decode('utf-8')
         my_dep = Calpino_dependency(line)
         if my_dep.is_ok():
             deps = my_dep.generate_dependencies(term_ids)
             for d in deps:
-               knaf_obj.add_dependency(d)
+                has_dependencies = True
+                knaf_obj.add_dependency(d)
+    if not has_dependencies:
+        # Something is wrong, presumably a problem within Alpino
+        raise Exception("Could not extract dependencies from the parse xml")
+    
     ##########################################
 
     # we return the counters for terms and consituent elements to keep generating following identifiers for next sentnces
