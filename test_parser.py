@@ -1,31 +1,20 @@
 from nose.tools import assert_equal
 from KafNafParserPy import KafNafParser
-import os
-from subprocess import Popen, PIPE
-from unittest import SkipTest
-
+import os, sys
+import subprocess
+from io import BytesIO
 
 __here__ = os.path.dirname(os.path.realpath(__file__))
 
-
-def set_up_alpino():
-    ##Uncomment next line and point it to your local path to Alpino if you dont want to set the environment variable ALPINO_HOME
-    #os.environ['ALPINO_HOME'] = '/home/izquierdo/tools/Alpino'
-
-    if 'ALPINO_HOME' not in os.environ:
-        raise SkipTest('ALPINO_HOME variable not set. Set this variable to point to your local path to Alpino. For instance:\nexport ALPINO_HOME=/home/your_user/your_tools/Alpino')
-    os.environ['SP_CSETLEN']='212'
-    os.environ['SP_CTYPE']='utf8'
-
+if not os.environ.get('ALPINO_HOME'):
+    os.environ['ALPINO_HOME'] = os.path.join(os.path.expanduser('~'), 'tools', 'Alpino')
 
 def _test_file(this_file):
     input_fd = open(this_file)
     
     cmd = [os.path.join(__here__),'run_parser.sh']
-    parser = Popen(os.path.join(__here__,'run_parser.sh'), stdin=input_fd, stdout=PIPE, stderr=PIPE, shell=True)
-    return_code = parser.wait()
-    
-    my_obj = KafNafParser(parser.stdout)
+    result = subprocess.check_output(os.path.join(__here__,'run_parser.sh'), stdin=input_fd)
+    my_obj = KafNafParser(BytesIO(result))
        
     
     #Check the terms
@@ -46,13 +35,10 @@ def _test_file(this_file):
     assert_equal(dependencies[5].get_function(),'hd/su')
     
     
-def test_morphosyn():
-    set_up_alpino()
+def test_morphosyn_kaf():
     kaf_file = os.path.join(__here__,'examples','file1.in.kaf')
     _test_file(kaf_file)
     
+def test_morphosyn_naf():
     naf_file = os.path.join(__here__,'examples','file1.in.naf')
     _test_file(naf_file)
-
-
-   
