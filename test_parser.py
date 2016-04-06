@@ -12,7 +12,6 @@ if not os.environ.get('ALPINO_HOME'):
 def _test_file(this_file):
     input_fd = open(this_file)
     
-    cmd = [os.path.join(__here__),'run_parser.sh']
     result = subprocess.check_output(os.path.join(__here__,'run_parser.sh'), stdin=input_fd)
     my_obj = KafNafParser(BytesIO(result))
        
