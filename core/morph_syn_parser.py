@@ -31,18 +31,22 @@ def set_up_alpino():
 
 def load_sentences(in_obj):
     previous_sent = None
+    previous_para = None
     current_sent = []
     sentences = []
     for token_obj in in_obj.get_tokens():
         token = token_obj.get_text()
         sent = token_obj.get_sent()
+        para = token_obj.get_para()
         token_id = token_obj.get_id()
-        if sent != previous_sent and previous_sent!=None:
+        if ((previous_sent is not None and sent != previous_sent) or
+            (previous_para is not None and para != previous_para)):
             sentences.append(current_sent)
             current_sent = [(token,token_id)]
         else:
             current_sent.append((token,token_id))
         previous_sent = sent
+        previous_para = para
     
     if len(current_sent) !=0:
         sentences.append(current_sent)
