@@ -21,7 +21,7 @@ this_name = 'Morphosyntactic parser based on Alpino'
 def set_up_alpino():
     ##Uncomment next line and point it to your local path to Alpino if you dont want to set the environment variable ALPINO_HOME
     #os.environ['ALPINO_HOME'] = '/home/izquierdo/tools/Alpino'
-    
+
     if 'ALPINO_HOME' not in os.environ:
         print>>sys.stderr,'ALPINO_HOME variable not set. Set this variable to point to your local path to Alpino. For instance:'
         print>>sys.stderr,'export ALPINO_HOME=/home/your_user/your_tools/Alpino'
@@ -47,7 +47,7 @@ def load_sentences(in_obj):
             current_sent.append((token,token_id))
         previous_sent = sent
         previous_para = para
-    
+
     if len(current_sent) !=0:
         sentences.append(current_sent)
     return sentences
@@ -66,13 +66,13 @@ def node_to_penn(node,map_token_begin_node):
             #The attribute begin gives you the number of the token
             word = word.replace('(','-LRB')
             word = word.replace(')','-RRB-')
-    
+
             num_token = node.get('begin')
             map_token_begin_node[num_token] = node
             word = num_token+'#'+word
-            if node.get('rel') == 'hd': 
+            if node.get('rel') == 'hd':
                 head = '=H'
-            else: 
+            else:
                 head = ''
             return '('+node.get('pos')+head+' '+word.encode('utf-8')+')'
         else:
@@ -90,24 +90,24 @@ def xml_to_penn(filename):
     '''
     ## Under certain condition, there is know bug of Alpino, it sets the encoding in the XML
     ## to iso-8859-1, but the real encoding is UTF-8. So we need to force to use this encoding
-  
+
     parser = etree.XMLParser(encoding='UTF-8')
     tree = etree.parse(filename,parser)
     ##This is a mapping for the token begin (0,1,2,...) to the <node element
     map_token_begin_node = {}
-    
+
     str = node_to_penn(tree.find('node'),map_token_begin_node)
     return str,map_token_begin_node
-  
-  
+
+
 def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_edge):
     #sentence is a list of pairs [
     print>>sys.stderr,'Processing file',xml_file
-    
+
     penn_tree_str, map_token_begin_node = xml_to_penn(xml_file)
-    
+
     ##########################################
-    #Create the term layer    
+    #Create the term layer
     ##########################################
 
     term_ids = []
@@ -134,62 +134,57 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
         knaf_obj.add_term(term_obj)
 
     ##########################################
-        
+
     ##########################################
     ##Constituency layer
     print>>sys.stderr,'  Creating the constituency layer...'
     tree_obj,cnt_t,cnt_nt,cnt_edge = convert_penn_to_knaf_with_numtokens(penn_tree_str,term_ids,lemma_for_termid,cnt_t,cnt_nt,cnt_edge)
     knaf_obj.add_constituency_tree(tree_obj)
     ##########################################
-    
+
 
     ##########################################
     # Dependency part
     ##########################################
-    
+
     # Call to Alpino with the --treebank option to get the dependencies out of the XML
     print>>sys.stderr,'  Creating the dependency layer...'
     alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
     cmd = [alpino_bin, '-treebank_triples', xml_file]
     output = check_output(cmd)
-    has_dependencies = False
     for line in output.splitlines():
         line = line.strip().decode('utf-8')
         my_dep = Calpino_dependency(line)
         if my_dep.is_ok():
             deps = my_dep.generate_dependencies(term_ids)
             for d in deps:
-                has_dependencies = True
                 knaf_obj.add_dependency(d)
-    if not has_dependencies:
-        # Something is wrong, presumably a problem within Alpino
-        raise Exception("Could not extract dependencies from the parse xml")
-    
+
     ##########################################
 
     # we return the counters for terms and consituent elements to keep generating following identifiers for next sentnces
     return count_terms,cnt_t,cnt_nt,cnt_edge
 
-def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):    
-    
+def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
+
     set_up_alpino()
 
     in_obj = KafNafParser(input_file)
-    
+
     lang = in_obj.get_language()
     if lang != 'nl':
         print>>sys.stdout,'ERROR! Language is ',lang,' and must be nl (Dutch)'
         sys.exit(-1)
-    
+
     ## Sentences is a list of lists containing pairs token, tokenid
     #  [[(This,id1),(is,id2)...],[('The',id10)...
     sentences = load_sentences(in_obj)
     ####################
-    
+
     # Create temporary folder to store the XML of Alpino
     out_folder_alp = tempfile.mkdtemp()
     ####################
-    
+
     # Call to Alpinoo and generate the XML files
     alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
     cmd = alpino_bin
@@ -211,7 +206,7 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
     if alpino_pro.wait() != 0:
         raise Exception("Call to alpino failed (see logs): %s" % cmd)
     ####################
-    
+
     # Process the XML files
     count_terms = 0
     cnt_t = cnt_nt = cnt_edge = 0
@@ -222,20 +217,20 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
         else:
             print>>sys.stderr,'Not found the file',xml_file
     ####################
-    
+
     ##Add the linguistic processors
     my_lp = Clp()
     my_lp.set_name(this_name)
     my_lp.set_version(version+'_'+last_modified)
     my_lp.set_timestamp()
     in_obj.add_linguistic_processor('terms',my_lp)
-    
+
     my_lp_const = Clp()
     my_lp_const.set_name(this_name)
     my_lp_const.set_version(version+'_'+last_modified)
     my_lp_const.set_timestamp()
     in_obj.add_linguistic_processor('constituents',my_lp_const)
-    
+
     my_lp_deps = Clp()
     my_lp_deps.set_name(this_name)
     my_lp_deps.set_version(version+'_'+last_modified)
@@ -253,7 +248,7 @@ if __name__ == '__main__':
     input_file = sys.stdin
     output_file = sys.stdout
     user_max = None
-    
+
     parser = argparse.ArgumentParser(description='Morphosyntactic parser based on Alpino', version=version)
     parser.add_argument('-t', '--time', dest='max_minutes', type=float, help='Maximum number of minutes per sentence. Sentences that take longer will be skipped and not parsed (value must be a float)')
 
