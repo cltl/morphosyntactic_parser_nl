@@ -53,6 +53,7 @@ class Calpino_dependency:
                 for t_to in terms_to:
                     ##Creating comment
                     str_comment = ' '+self.relation+'('+self.lemma_to+','+self.lemma_from+') '
+                    str_comment = str_comment.encode('ascii', 'xmlcharrefreplace')
                     
                     my_dep = Cdependency()
                     my_dep.set_from(t_to)
