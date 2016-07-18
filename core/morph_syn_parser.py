@@ -195,18 +195,17 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
     print>>sys.stderr,'Calling to Alpino at',os.environ['ALPINO_HOME'],'with',len(sentences),'sentences...'
     ##print>>sys.stderr,'CMD:%s' % cmd
     alpino_pro = Popen(cmd, stdin=PIPE, shell=True)
-    for sentence in sentences:
+    for num_sentence, sentence in enumerate(sentences,1):
+        alpino_pro.stdin.write('%d|' % num_sentence)
         for token,token_id in sentence:
             token = token.replace('[','\[')
             token = token.replace(']','\]')
-            token = token.replace('|','\|')
             alpino_pro.stdin.write(token.encode('utf-8')+' ')
         alpino_pro.stdin.write('\n')
     alpino_pro.stdin.close()
     if alpino_pro.wait() != 0:
         raise Exception("Call to alpino failed (see logs): %s" % cmd)
     ####################
-
     # Process the XML files
     count_terms = 0
     cnt_t = cnt_nt = cnt_edge = 0
