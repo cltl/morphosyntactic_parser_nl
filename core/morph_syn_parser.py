@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import logging
+import requests
 import os
 import sys
 import tempfile
@@ -21,13 +23,17 @@ this_name = 'Morphosyntactic parser based on Alpino'
 def set_up_alpino():
     ##Uncomment next line and point it to your local path to Alpino if you dont want to set the environment variable ALPINO_HOME
     #os.environ['ALPINO_HOME'] = '/home/izquierdo/tools/Alpino'
-
-    if 'ALPINO_HOME' not in os.environ:
-        print>>sys.stderr,'ALPINO_HOME variable not set. Set this variable to point to your local path to Alpino. For instance:'
-        print>>sys.stderr,'export ALPINO_HOME=/home/your_user/your_tools/Alpino'
+    if 'ALPINO_HOME' in os.environ:
+        os.environ['SP_CSETLEN'] = '212'
+        os.environ['SP_CTYPE'] = 'utf8'
+        return 'local', os.environ['ALPINO_HOME']
+    elif 'ALPINO_SERVER' in os.environ:
+        return 'server', os.environ['ALPINO_SERVER']
+    else:
+        logging.warning('ALPINO_HOME or ALPINO_SERVER variables not set.'
+                        'Set ALPINO_HOME to point to your local path to Alpino. For instance:\n'
+                        'export ALPINO_HOME=/home/your_user/your_tools/Alpino')
         sys.exit(-1)
-    os.environ['SP_CSETLEN']='212'
-    os.environ['SP_CTYPE']='utf8'
 
 def load_sentences(in_obj):
     previous_sent = None
@@ -149,11 +155,38 @@ def process_alpino_xml(xml_tree, dependencies, sentence,count_terms,knaf_obj,cnt
     # we return the counters for terms and consituent elements to keep generating following identifiers for next sentnces
     return count_terms,cnt_t,cnt_nt,cnt_edge
 
+
 def call_alpino(sentences, max_min_per_sent):
     """Call alpino and yield (sentence, xml_tree, dependencies) tuples"""
-    alptype, alpino = set_up_alpino()
 
-    # Create parser object
+    alpino_type, alpino_location = set_up_alpino()
+    if alpino_type == 'local':
+        return call_alpino_local(sentences, max_min_per_sent, alpino_location)
+    else:
+        return call_alpino_server(sentences, alpino_location)
+
+
+def call_alpino_server(sentences, server):
+    ## Under certain condition, there is know bug of Alpino, it sets the encoding in the XML
+    ## to iso-8859-1, but the real encoding is UTF-8. So we need to force to use this encoding
+    parser = etree.XMLParser(encoding='UTF-8')
+    url = "{server}/parse".format(**locals())
+    text = "\n".join(sentences_from_naf(sentences))
+    r = requests.post(url, json=dict(output="treebank_triples", text=text))
+    r.raise_for_status()
+    for sid, results in r.json().items():
+        sentence = sentences[int(sid)-1]
+        tree = etree.fromstring(results['xml'].encode("utf-8"), parser)
+        dependencies = [Calpino_dependency(dep) for dep in results['triples']]
+        yield sentence, tree, dependencies
+
+
+def sentences_from_naf(sentences):
+    for i, sentence in enumerate(sentences, 1):
+        sent = " ".join(token.replace('[', '\[').replace(']', '\]') for token, _token_id in sentence)
+        yield "{i}|{sent}".format(**locals())
+
+def call_alpino_local(sentences, max_min_per_sent, alpino_home):
     ## Under certain condition, there is know bug of Alpino, it sets the encoding in the XML
     ## to iso-8859-1, but the real encoding is UTF-8. So we need to force to use this encoding
     parser = etree.XMLParser(encoding='UTF-8')
@@ -163,37 +196,33 @@ def call_alpino(sentences, max_min_per_sent):
     ####################
 
     # Call to Alpinoo and generate the XML files
-    if alptype == 'local':
-        cmd = os.path.join(alpino, 'bin', 'Alpino')
-        if max_min_per_sent is not None:
-            # max_min_per_sent is minutes
-            cmd += ' user_max=%d' % int(max_min_per_sent * 60 * 1000)  # converted to milliseconds
-        cmd += ' end_hook=xml -flag treebank ' + out_folder_alp + ' -parse'
-        print>> sys.stderr, 'Calling', cmd, 'with', len(sentences), 'sentences...'
-        alpino_pro = Popen(cmd, stdin=PIPE, shell=True)
-        for num_sentence, sentence in enumerate(sentences, 1):
-            alpino_pro.stdin.write('%d|' % num_sentence)
-            for token, token_id in sentence:
-                token = token.replace('[', '\[')
-                token = token.replace(']', '\]')
-                alpino_pro.stdin.write(token.encode('utf-8') + ' ')
-            alpino_pro.stdin.write('\n')
-        alpino_pro.stdin.close()
-        if alpino_pro.wait() != 0:
-            raise Exception("Call to alpino failed (see logs): %s" % cmd)
+    cmd = os.path.join(alpino_home, 'bin', 'Alpino')
+    if max_min_per_sent is not None:
+        # max_min_per_sent is minutes
+        cmd += ' user_max=%d' % int(max_min_per_sent * 60 * 1000)  # converted to milliseconds
+    cmd += ' end_hook=xml -flag treebank ' + out_folder_alp + ' -parse'
+    logging.info('Calling Alpino with {} sentences'.format(len(sentences)))
+    logging.debug("CMD: {}".format(cmd))
+    alpino_pro = Popen(cmd, stdin=PIPE, shell=True)
+    for sentence in sentences_from_naf(sentences):
+        alpino_pro.stdin.write(sentence.encode("utf-8"))
+        alpino_pro.stdin.write(b'\n')
+    alpino_pro.stdin.close()
+    if alpino_pro.wait() != 0:
+        raise Exception("Call to alpino failed (see logs): %s" % cmd)
 
     # Parse results, get dependencies, and yield sentence results
     for i, sent in enumerate(sentences):
         xml_file = os.path.join(out_folder_alp, str(i+1)+'.xml')
         if not os.path.exists(xml_file):
-            print>>sys.stderr, 'Not found the file', xml_file
+            logging.warning('Not found the file {}'.format(xml_file))
             continue
 
         tree = etree.parse(xml_file, parser)
 
         # Create dependency layer by calling alpino again with -treebank_triples
-        print>> sys.stderr, '  Creating the dependency layer...'
-        alpino_bin = os.path.join(os.environ['ALPINO_HOME'], 'bin', 'Alpino')
+        logging.info('Creating the dependency layer...')
+        alpino_bin = os.path.join(alpino_home, 'bin', 'Alpino')
         cmd = [alpino_bin, '-treebank_triples', xml_file]
         output = check_output(cmd)
         dependencies = [Calpino_dependency(line.strip().decode('utf-8')) for line in output.splitlines()]
@@ -255,10 +284,15 @@ if __name__ == '__main__':
     output_file = sys.stdout
     user_max = None
 
-    parser = argparse.ArgumentParser(description='Morphosyntactic parser based on Alpino', version=version)
+    parser = argparse.ArgumentParser(description='Morphosyntactic parser based on Alpino')
     parser.add_argument('-t', '--time', dest='max_minutes', type=float, help='Maximum number of minutes per sentence. Sentences that take longer will be skipped and not parsed (value must be a float)')
+    parser.add_argument("--verbose", "-v", help="Verbose output", action="store_true")
+    parser.add_argument('-V', '--version', action='version', version="{} ({})".format(__name__, version))
 
     args = parser.parse_args()
+
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
+                        format='[%(asctime)s %(name)-12s %(levelname)-5s] %(message)s')
 
     run_morph_syn_parser(input_file,output_file, max_min_per_sent=args.max_minutes)
 
