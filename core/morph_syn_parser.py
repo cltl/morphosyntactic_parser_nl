@@ -84,27 +84,18 @@ def node_to_penn(node,map_token_begin_node):
         str+=')'
         return str
 
-def xml_to_penn(filename):
+def xml_to_penn(tree):
     '''
     Converts the xml from Alpino into penntreebank format
     '''
-    ## Under certain condition, there is know bug of Alpino, it sets the encoding in the XML
-    ## to iso-8859-1, but the real encoding is UTF-8. So we need to force to use this encoding
-
-    parser = etree.XMLParser(encoding='UTF-8')
-    tree = etree.parse(filename,parser)
     ##This is a mapping for the token begin (0,1,2,...) to the <node element
     map_token_begin_node = {}
-
     str = node_to_penn(tree.find('node'),map_token_begin_node)
-    return str,map_token_begin_node
+    return str, map_token_begin_node
 
 
-def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_edge):
-    #sentence is a list of pairs [
-    print>>sys.stderr,'Processing file',xml_file
-
-    penn_tree_str, map_token_begin_node = xml_to_penn(xml_file)
+def process_alpino_xml(xml_tree, dependencies, sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_edge):
+    penn_tree_str, map_token_begin_node = xml_to_penn(xml_tree)
 
     ##########################################
     #Create the term layer
@@ -147,14 +138,7 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
     # Dependency part
     ##########################################
 
-    # Call to Alpino with the --treebank option to get the dependencies out of the XML
-    print>>sys.stderr,'  Creating the dependency layer...'
-    alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
-    cmd = [alpino_bin, '-treebank_triples', xml_file]
-    output = check_output(cmd)
-    for line in output.splitlines():
-        line = line.strip().decode('utf-8')
-        my_dep = Calpino_dependency(line)
+    for my_dep in dependencies:
         if my_dep.is_ok():
             deps = my_dep.generate_dependencies(term_ids)
             for d in deps:
@@ -165,10 +149,61 @@ def process_alpino_xml(xml_file,sentence,count_terms,knaf_obj,cnt_t,cnt_nt,cnt_e
     # we return the counters for terms and consituent elements to keep generating following identifiers for next sentnces
     return count_terms,cnt_t,cnt_nt,cnt_edge
 
+def call_alpino(sentences, max_min_per_sent):
+    """Call alpino and yield (sentence, xml_tree, dependencies) tuples"""
+    alptype, alpino = set_up_alpino()
+
+    # Create parser object
+    ## Under certain condition, there is know bug of Alpino, it sets the encoding in the XML
+    ## to iso-8859-1, but the real encoding is UTF-8. So we need to force to use this encoding
+    parser = etree.XMLParser(encoding='UTF-8')
+
+    # Create temporary folder to store the XML of Alpino
+    out_folder_alp = tempfile.mkdtemp()
+    ####################
+
+    # Call to Alpinoo and generate the XML files
+    if alptype == 'local':
+        cmd = os.path.join(alpino, 'bin', 'Alpino')
+        if max_min_per_sent is not None:
+            # max_min_per_sent is minutes
+            cmd += ' user_max=%d' % int(max_min_per_sent * 60 * 1000)  # converted to milliseconds
+        cmd += ' end_hook=xml -flag treebank ' + out_folder_alp + ' -parse'
+        print>> sys.stderr, 'Calling', cmd, 'with', len(sentences), 'sentences...'
+        alpino_pro = Popen(cmd, stdin=PIPE, shell=True)
+        for num_sentence, sentence in enumerate(sentences, 1):
+            alpino_pro.stdin.write('%d|' % num_sentence)
+            for token, token_id in sentence:
+                token = token.replace('[', '\[')
+                token = token.replace(']', '\]')
+                alpino_pro.stdin.write(token.encode('utf-8') + ' ')
+            alpino_pro.stdin.write('\n')
+        alpino_pro.stdin.close()
+        if alpino_pro.wait() != 0:
+            raise Exception("Call to alpino failed (see logs): %s" % cmd)
+
+    # Parse results, get dependencies, and yield sentence results
+    for i, sent in enumerate(sentences):
+        xml_file = os.path.join(out_folder_alp, str(i+1)+'.xml')
+        if not os.path.exists(xml_file):
+            print>>sys.stderr, 'Not found the file', xml_file
+            continue
+
+        tree = etree.parse(xml_file, parser)
+
+        # Create dependency layer by calling alpino again with -treebank_triples
+        print>> sys.stderr, '  Creating the dependency layer...'
+        alpino_bin = os.path.join(os.environ['ALPINO_HOME'], 'bin', 'Alpino')
+        cmd = [alpino_bin, '-treebank_triples', xml_file]
+        output = check_output(cmd)
+        dependencies = [Calpino_dependency(line.strip().decode('utf-8')) for line in output.splitlines()]
+        # Yield sentence, parsed XML tree, and dependencies
+        yield sent, tree, dependencies
+
+    # Cleanup
+    shutil.rmtree(out_folder_alp)
+
 def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
-
-    set_up_alpino()
-
     in_obj = KafNafParser(input_file)
 
     lang = in_obj.get_language()
@@ -181,41 +216,15 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
     sentences = load_sentences(in_obj)
     ####################
 
-    # Create temporary folder to store the XML of Alpino
-    out_folder_alp = tempfile.mkdtemp()
-    ####################
-
-    # Call to Alpinoo and generate the XML files
-    alpino_bin = os.path.join(os.environ['ALPINO_HOME'],'bin','Alpino')
-    cmd = alpino_bin
-    if max_min_per_sent is not None:
-        #max_min_per_sent is minutes
-        cmd = cmd+' user_max=%d' % int(max_min_per_sent * 60 * 1000)  #converted to milliseconds
-    cmd = cmd+' end_hook=xml -flag treebank '+out_folder_alp+' -parse'
-    print>>sys.stderr,'Calling to Alpino at',os.environ['ALPINO_HOME'],'with',len(sentences),'sentences...'
-    ##print>>sys.stderr,'CMD:%s' % cmd
-    alpino_pro = Popen(cmd, stdin=PIPE, shell=True)
-    for num_sentence, sentence in enumerate(sentences,1):
-        alpino_pro.stdin.write('%d|' % num_sentence)
-        for token,token_id in sentence:
-            token = token.replace('[','\[')
-            token = token.replace(']','\]')
-            alpino_pro.stdin.write(token.encode('utf-8')+' ')
-        alpino_pro.stdin.write('\n')
-    alpino_pro.stdin.close()
-    if alpino_pro.wait() != 0:
-        raise Exception("Call to alpino failed (see logs): %s" % cmd)
     ####################
     # Process the XML files
     count_terms = 0
     cnt_t = cnt_nt = cnt_edge = 0
-    for num_sent in range(len(sentences)):
-        xml_file = os.path.join(out_folder_alp,str(num_sent+1)+'.xml')
-        if os.path.exists(xml_file):
-            count_terms,cnt_t,cnt_nt,cnt_edge = process_alpino_xml(xml_file,sentences[num_sent],count_terms,in_obj,cnt_t,cnt_nt,cnt_edge)
-        else:
-            print>>sys.stderr,'Not found the file',xml_file
+    for sentence, tree, dependencies in call_alpino(sentences, max_min_per_sent):
+        count_terms,cnt_t,cnt_nt,cnt_edge = process_alpino_xml(tree, dependencies, sentence,count_terms,in_obj,cnt_t,cnt_nt,cnt_edge)
     ####################
+
+
 
     ##Add the linguistic processors
     my_lp = Clp()
@@ -237,8 +246,6 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
     in_obj.add_linguistic_processor('deps',my_lp_deps)
     ####################
 
-
-    shutil.rmtree(out_folder_alp)
     in_obj.dump(sys.stdout)
 
 
