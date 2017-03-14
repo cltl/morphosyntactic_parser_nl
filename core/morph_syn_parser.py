@@ -80,7 +80,7 @@ def node_to_penn(node,map_token_begin_node):
                 head = '=H'
             else:
                 head = ''
-            return '('+node.get('pos')+head+' '+word.encode('utf-8')+')'
+            return '('+node.get('pos')+head+' '+word+')'
         else:
             return ''
     else:
@@ -109,7 +109,7 @@ def process_alpino_xml(xml_tree, dependencies, sentence,count_terms,knaf_obj,cnt
 
     term_ids = []
     lemma_for_termid = {}
-    print>>sys.stderr,'  Creating the term layer...'
+    logging.info('Creating the term layer...')
     for num_token, (token,token_id) in enumerate(sentence):
         new_term_id = 't_'+str(count_terms)
         count_terms+=1
@@ -134,7 +134,7 @@ def process_alpino_xml(xml_tree, dependencies, sentence,count_terms,knaf_obj,cnt
 
     ##########################################
     ##Constituency layer
-    print>>sys.stderr,'  Creating the constituency layer...'
+    logging.info('Creating the constituency layer...')
     tree_obj,cnt_t,cnt_nt,cnt_edge = convert_penn_to_knaf_with_numtokens(penn_tree_str,term_ids,lemma_for_termid,cnt_t,cnt_nt,cnt_edge)
     knaf_obj.add_constituency_tree(tree_obj)
     ##########################################
@@ -237,7 +237,7 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
 
     lang = in_obj.get_language()
     if lang != 'nl':
-        print>>sys.stdout,'ERROR! Language is ',lang,' and must be nl (Dutch)'
+        logging.warning('ERROR! Language is {} and must be nl (Dutch)'.format(lang))
         sys.exit(-1)
 
     ## Sentences is a list of lists containing pairs token, tokenid
@@ -275,7 +275,7 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
     in_obj.add_linguistic_processor('deps',my_lp_deps)
     ####################
 
-    in_obj.dump(sys.stdout)
+    in_obj.dump()
 
 
 
