@@ -7,10 +7,13 @@ import sys
 import tempfile
 import shutil
 import argparse
+from io import BytesIO
 
 from KafNafParserPy import *
 from subprocess import Popen,PIPE, check_output
 from lxml import etree
+from lxml.etree import XMLSyntaxError
+
 from convert_penn_to_kaf import convert_penn_to_knaf_with_numtokens
 from alpino_dependency import Calpino_dependency
 
@@ -34,6 +37,46 @@ def set_up_alpino():
                         'Set ALPINO_HOME to point to your local path to Alpino. For instance:\n'
                         'export ALPINO_HOME=/home/your_user/your_tools/Alpino')
         sys.exit(-1)
+
+def tokenize_local(paras, alpino_home):
+    cmd = os.path.join(alpino_home, 'Tokenization', 'tok')
+    sentnr = 1
+    for parnr, para in enumerate(paras, start=1):
+        p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE)
+        out, _err = p.communicate(para.encode("utf-8"))
+        for s in out.decode('utf-8').split("\n"):
+            if s.strip():
+                yield parnr, sentnr, s.strip()
+                sentnr += 1
+
+def add_tokenized_to_naf(naf, sentences):
+    """Add the tokenized sentences to naf, returning and [(token, id), ..] list"""
+    offset = 0
+    old_parnr = None
+    for parnr, sentnr, sentence in sentences:
+        if old_parnr is not None and parnr != old_parnr:
+            offset += 1 # character for line break
+        sent = []
+        for word in sentence.split():
+            length = len(word)
+            token = naf.create_wf(word, sentnr, offset=offset, length=length)
+            offset += len(word) + 1
+            token.set_para(str(parnr))
+            sent.append((word, token.get_id()))
+        yield sent
+
+def tokenize(naf):
+    """Tokenize the text in the NAF object and return [(token, id), ..] pairs
+
+    Assumes that single line breaks are not relevant, and double lines breaks mark paragraphs
+    """
+    paras = [para.replace("\n", " ") for  para in re.split(r"\n\s*\n", naf.get_raw())]
+    alpino_type, alpino_location = set_up_alpino()
+    if alpino_type == "local":
+        sentences = list(tokenize_local(paras, alpino_location))
+    else:
+        raise NotImplementedError("Tokenization via alpino-server is not implemented yet")
+    return list(add_tokenized_to_naf(naf, sentences))
 
 def load_sentences(in_obj):
     previous_sent = None
@@ -184,7 +227,7 @@ def call_alpino_server(sentences, server):
 def sentences_from_naf(sentences):
     for i, sentence in enumerate(sentences, 1):
         sent = " ".join(token.replace('[', '\[').replace(']', '\]') for token, _token_id in sentence)
-        yield "{i}|{sent}".format(**locals())
+        yield u"{i}|{sent}".format(**locals())
 
 def call_alpino_local(sentences, max_min_per_sent, alpino_home):
     ## Under certain condition, there is know bug of Alpino, it sets the encoding in the XML
@@ -232,8 +275,28 @@ def call_alpino_local(sentences, max_min_per_sent, alpino_home):
     # Cleanup
     shutil.rmtree(out_folder_alp)
 
+def get_naf(input_file):
+    # We need to buffer the input since otherwise it will be lost if the parser fails
+    input = input_file.read()
+    try:
+        naf = KafNafParser(BytesIO(input))
+    except XMLSyntaxError:
+        input = input.decode("utf-8")
+        if "<NAF" in input and "</NAF>" in input:
+            # I'm guessing this should be a NAF file but something is wrong - let's raise it
+            logging.exception("Error parsing NAF file")
+            raise
+        naf = KafNafParser(type="NAF")
+        naf.set_language("nl")
+        naf.lang = "nl"
+        naf.raw = input
+        naf.set_raw(naf.raw)
+    return naf
+
+
+
 def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
-    in_obj = KafNafParser(input_file)
+    in_obj = get_naf(input_file)
 
     lang = in_obj.get_language()
     if lang != 'nl':
@@ -242,7 +305,10 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
 
     ## Sentences is a list of lists containing pairs token, tokenid
     #  [[(This,id1),(is,id2)...],[('The',id10)...
-    sentences = load_sentences(in_obj)
+    if in_obj.text_layer is None:
+        sentences = tokenize(in_obj)
+    else:
+        sentences = load_sentences(in_obj)
     ####################
 
     ####################
@@ -280,7 +346,12 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
 
 
 if __name__ == '__main__':
-    input_file = sys.stdin
+    try:
+        # python3: sys.stdin.buffer contains the 'bytes'
+        input_file = sys.stdin.buffer
+    except AttributeError:
+        # python2: sys.stdin contains bytes (aka 'str)
+        input_file = sys.stdin
     output_file = sys.stdout
     user_max = None
 
