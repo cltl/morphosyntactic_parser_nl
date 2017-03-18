@@ -1,25 +1,24 @@
 #!/usr/bin/env python
 
 import logging
-import requests
 import os
+import shutil
 import sys
 import tempfile
-import shutil
-import argparse
 from io import BytesIO
-
-from KafNafParserPy import *
 from subprocess import Popen,PIPE, check_output
+
+import requests
+from KafNafParserPy import *
 from lxml import etree
 from lxml.etree import XMLSyntaxError
 
-from convert_penn_to_kaf import convert_penn_to_knaf_with_numtokens
-from alpino_dependency import Calpino_dependency
+from .alpino_dependency import Calpino_dependency
+from .convert_penn_to_kaf import convert_penn_to_knaf_with_numtokens
 
-last_modified='22sept2015'
-version="0.2"
+__version__ = "0.3"
 this_name = 'Morphosyntactic parser based on Alpino'
+last_modified = '2017-03-18'
 
 ###############################################
 
@@ -33,10 +32,9 @@ def set_up_alpino():
     elif 'ALPINO_SERVER' in os.environ:
         return 'server', os.environ['ALPINO_SERVER']
     else:
-        logging.warning('ALPINO_HOME or ALPINO_SERVER variables not set.'
+        raise Exception('ALPINO_HOME or ALPINO_SERVER variables not set.'
                         'Set ALPINO_HOME to point to your local path to Alpino. For instance:\n'
                         'export ALPINO_HOME=/home/your_user/your_tools/Alpino')
-        sys.exit(-1)
 
 def tokenize_local(paras, alpino_home):
     cmd = os.path.join(alpino_home, 'Tokenization', 'tok')
@@ -294,8 +292,7 @@ def get_naf(input_file):
     return naf
 
 
-
-def run_morph_syn_parser(input_file, max_min_per_sent=None):
+def parse(input_file, max_min_per_sent=None):
     in_obj = get_naf(input_file)
 
     lang = in_obj.get_language()
@@ -324,46 +321,21 @@ def run_morph_syn_parser(input_file, max_min_per_sent=None):
     ##Add the linguistic processors
     my_lp = Clp()
     my_lp.set_name(this_name)
-    my_lp.set_version(version+'_'+last_modified)
+    my_lp.set_version(__version__+'_'+last_modified)
     my_lp.set_timestamp()
     in_obj.add_linguistic_processor('terms',my_lp)
 
     my_lp_const = Clp()
     my_lp_const.set_name(this_name)
-    my_lp_const.set_version(version+'_'+last_modified)
+    my_lp_const.set_version(__version__+'_'+last_modified)
     my_lp_const.set_timestamp()
     in_obj.add_linguistic_processor('constituents',my_lp_const)
 
     my_lp_deps = Clp()
     my_lp_deps.set_name(this_name)
-    my_lp_deps.set_version(version+'_'+last_modified)
+    my_lp_deps.set_version(__version__+'_'+last_modified)
     my_lp_deps.set_timestamp()
     in_obj.add_linguistic_processor('deps',my_lp_deps)
     ####################
 
     return in_obj
-
-
-
-if __name__ == '__main__':
-    try:
-        # python3: sys.stdin.buffer contains the 'bytes'
-        input_file = sys.stdin.buffer
-    except AttributeError:
-        # python2: sys.stdin contains bytes (aka 'str)
-        input_file = sys.stdin
-    user_max = None
-
-    parser = argparse.ArgumentParser(description='Morphosyntactic parser based on Alpino')
-    parser.add_argument('-t', '--time', dest='max_minutes', type=float, help='Maximum number of minutes per sentence. Sentences that take longer will be skipped and not parsed (value must be a float)')
-    parser.add_argument("--verbose", "-v", help="Verbose output", action="store_true")
-    parser.add_argument('-V', '--version', action='version', version="{} ({})".format(__name__, version))
-
-    args = parser.parse_args()
-
-    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
-                        format='[%(asctime)s %(name)-12s %(levelname)-5s] %(message)s')
-
-    in_obj = run_morph_syn_parser(input_file, max_min_per_sent=args.max_minutes)
-    in_obj.dump()
-

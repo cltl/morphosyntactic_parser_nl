@@ -1,8 +1,9 @@
-from lxml import etree
-from KafNafParserPy import *
-from tree import Tree
-import logging
 from xml.sax.saxutils import escape
+
+from KafNafParserPy import *
+from lxml import etree
+
+from .tree import Tree
 
 
 ## will be used as global variables to generate recursively the KAF constituent nodes
