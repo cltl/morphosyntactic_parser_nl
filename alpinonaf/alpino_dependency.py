@@ -1,5 +1,7 @@
+import logging
 import re
 import sys
+from xml.sax.saxutils import escape
 
 from KafNafParserPy import Cdependency
 
@@ -53,7 +55,7 @@ class Calpino_dependency:
                 for t_to in terms_to:
                     ##Creating comment
                     str_comment = ' '+self.relation+'('+self.lemma_to+','+self.lemma_from+') '
-                    str_comment = str_comment.encode('ascii', 'xmlcharrefreplace')
+                    str_comment = escape(str_comment)
                     
                     my_dep = Cdependency()
                     my_dep.set_from(t_to)
@@ -63,5 +65,5 @@ class Calpino_dependency:
                     
                     dependencies.append(my_dep)
         except Exception as e:
-            print>>sys.stderr,str(e)
+            logging.exception("Error on generating dependencies")
         return dependencies

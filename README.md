@@ -1,30 +1,26 @@
 #morphosyntactic_parser_nl#
 
-Morphosyntactic parser for Dutch based on the Alpino parser. It takes as input a NAF/KAF file with tokens (processed by a tokeniser and sentence splitter)
-and generates the term layer (lemmas and rich morphological information), the constituency layer and the dependency layer. The Alpino parser is only
-called once to improve the performance of our module.
+Wrapper around the Dutch Alpino parser. It takes as input a text/NAF/KAF file with either raw text or tokens (processed by a tokeniser and sentence splitter)
+and generates the term layer (lemmas and rich morphological information), the constituency layer and the dependency layer.
 
 ##Requirements and installation##
 
-There are two dependencies, the Alpino parser, and the KAfNafParserPy libraty for parsing NAF/KAF objects.
+There are two dependencies, the Alpino parser, and the KAfNafParserPy library for parsing NAF/KAF objects.
 
-For the Alpino parser you will need to visit http://www.let.rug.nl/vannoord/alp/Alpino/ and follow the instructions to get Alpino installed. Please
-make use you use the last version of Alpino (preferably in Linux) as previous version do not provide rich morphological information.
+For the Alpino parser you have two choices.
+For a local install, visit http://www.let.rug.nl/vannoord/alp/Alpino/ and follow the instructions to get Alpino installed, or run install_alpino.sh.
+Make sure to set ALPINO_HOME to point to the installation.
 
-The KafNafParserPy library can be found at https://github.com/cltl/KafNafParserPy . You will need just to clone the repository to your machine, and make
-sure it is accesible by Python (or add it to the PYTHON_PATH environment variable).
+For using an alpino server instance (e.g. through alpino-docker), point ALPINO_SERVER to the HTTP address of the server (e.g. ALPINO_SERVER=http://localhost:5002)
+
+The KafNafParserPy library can be install through pip or from https://github.com/cltl/KafNafParserPy
 
 Once you have the previous 2 steps completed, the last step is to clone this repository to your machine. You will need to tell the library where Alpino
 has been installed in your machine. There are two ways to do this. The first one is by setting the environment variable ALPINO_HOME, and point it to the
 correct path on your local machine.
+
 ```shell
 export ALPINO_HOME=/home/a/b/c/Alpino
-```
-
-The second option is to hard code it. You will need to edit the script `core/morph_syn_parser.py`, find the function `set_up_alpino`, and find, uncomment and and modify the next
-line properly.
-```shell
-#os.environ['ALPINO_HOME'] = '/home/izquierdo/tools/Alpino'
 ```
 
 ##Usage##

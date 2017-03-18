@@ -1,8 +1,6 @@
 #!/bin/bash
 
-this_dir=$(dirname $0)
-
-python $this_dir/core/morph_syn_parser.py
+python -m alpinonaf
 
 #For instance to set the maximum number of minutes per sentence to 5 minutes:
 ###python $this_dir/core/morph_syn_parser.py -t 5

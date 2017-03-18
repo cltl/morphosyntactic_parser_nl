@@ -18,6 +18,7 @@ syntax trees and morphological trees.
 
 import re
 import string
+from six import string_types as basestring
 
 ######################################################################
 ## Trees
@@ -313,7 +314,7 @@ class Tree(list):
         """
 
         if not isinstance(self.node, basestring):
-            raise TypeError, 'Productions can only be generated from trees having node labels that are strings'
+            raise TypeError('Productions can only be generated from trees having node labels that are strings')
 
         prods = [Production(Nonterminal(self.node), _child_names(self))]
         for child in self:
@@ -1369,63 +1370,63 @@ def demo():
     # Demonstrate tree parsing.
     s = '(S (NP (DT the) (NN cat)) (VP (VBD ate) (NP (DT a) (NN cookie))))'
     t = Tree(s)
-    print "Convert bracketed string into tree:"
-    print t
-    print t.__repr__()
+    print("Convert bracketed string into tree:")
+    print(t)
+    print(t.__repr__())
 
-    print "Display tree properties:"
-    print t.node           # tree's constituent type
-    print t[0]             # tree's first child
-    print t[1]             # tree's second child
-    print t.height()
-    print t.leaves()
-    print t[1]
-    print t[1,1]
-    print t[1,1,0]
+    print("Display tree properties:")
+    print(t.node)           # tree's constituent type
+    print(t[0])             # tree's first child
+    print(t[1])             # tree's second child
+    print(t.height())
+    print(t.leaves())
+    print(t[1])
+    print(t[1,1])
+    print(t[1,1,0])
 
     # Demonstrate tree modification.
     the_cat = t[0]
     the_cat.insert(1, tree.Tree.parse('(JJ big)'))
-    print "Tree modification:"
-    print t
+    print("Tree modification:")
+    print(t)
     t[1,1,1] = tree.Tree.parse('(NN cake)')
-    print t
-    print
+    print()
+    print()
 
     # Tree transforms
-    print "Collapse unary:"
+    print( "Collapse unary:")
     t.collapse_unary()
-    print t
-    print "Chomsky normal form:"
+    print(t)
+    print("Chomsky normal form:")
     t.chomsky_normal_form()
-    print t
-    print
+    print( t)
+    print()
 
     # Demonstrate probabilistic trees.
     pt = tree.ProbabilisticTree('x', ['y', 'z'], prob=0.5)
-    print "Probabilistic Tree:"
-    print pt
-    print
+    print("Probabilistic Tree:")
+    print(pt)
+    print()
 
     # Demonstrate parsing of treebank output format.
     t = tree.Tree.parse(t.pprint())
-    print "Convert tree to bracketed string and back again:"
-    print t
-    print
+    print("Convert tree to bracketed string and back again:")
+    print(t)
+    print()
 
     # Demonstrate LaTeX output
-    print "LaTeX output:"
-    print t.pprint_latex_qtree()
-    print
+    print("LaTeX output:")
+    print(t.pprint_latex_qtree())
+    print()
 
     # Demonstrate Productions
-    print "Production output:"
-    print t.productions()
-    print
+    print("Production output:")
+    print(t.productions())
+    print()
 
     # Demonstrate tree nodes containing objects other than strings
     t.node = ('test', 3)
-    print t
+    print(t)
 
 __all__ = ['ImmutableProbabilisticTree', 'ImmutableTree', 'ProbabilisticMixIn',
            'ProbabilisticTree', 'Tree', 'bracket_parse',
