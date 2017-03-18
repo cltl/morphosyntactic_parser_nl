@@ -285,6 +285,7 @@ def get_naf(input_file):
             logging.exception("Error parsing NAF file")
             raise
         naf = KafNafParser(type="NAF")
+        naf.set_version("3.0")
         naf.set_language("nl")
         naf.lang = "nl"
         naf.raw = input
@@ -293,7 +294,10 @@ def get_naf(input_file):
 
 
 def parse(input_file, max_min_per_sent=None):
-    in_obj = get_naf(input_file)
+    if isinstance(input_file, KafNafParser):
+        in_obj = input_file
+    else:
+        in_obj = get_naf(input_file)
 
     lang = in_obj.get_language()
     if lang != 'nl':
