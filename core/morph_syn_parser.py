@@ -295,7 +295,7 @@ def get_naf(input_file):
 
 
 
-def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
+def run_morph_syn_parser(input_file, max_min_per_sent=None):
     in_obj = get_naf(input_file)
 
     lang = in_obj.get_language()
@@ -341,7 +341,7 @@ def run_morph_syn_parser(input_file, output_file, max_min_per_sent=None):
     in_obj.add_linguistic_processor('deps',my_lp_deps)
     ####################
 
-    in_obj.dump()
+    return in_obj
 
 
 
@@ -352,7 +352,6 @@ if __name__ == '__main__':
     except AttributeError:
         # python2: sys.stdin contains bytes (aka 'str)
         input_file = sys.stdin
-    output_file = sys.stdout
     user_max = None
 
     parser = argparse.ArgumentParser(description='Morphosyntactic parser based on Alpino')
@@ -365,5 +364,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
                         format='[%(asctime)s %(name)-12s %(levelname)-5s] %(message)s')
 
-    run_morph_syn_parser(input_file,output_file, max_min_per_sent=args.max_minutes)
+    in_obj = run_morph_syn_parser(input_file, max_min_per_sent=args.max_minutes)
+    in_obj.dump()
 
