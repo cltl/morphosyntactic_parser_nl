@@ -6,6 +6,7 @@ import shutil
 import sys
 import tempfile
 from io import BytesIO
+from itertools import groupby
 from subprocess import Popen,PIPE, check_output
 
 import requests
@@ -235,7 +236,6 @@ def call_alpino_local(sentences, max_min_per_sent, alpino_home):
     # Create temporary folder to store the XML of Alpino
     out_folder_alp = tempfile.mkdtemp()
     ####################
-
     # Call to Alpinoo and generate the XML files
     cmd = os.path.join(alpino_home, 'bin', 'Alpino')
     if max_min_per_sent is not None:
@@ -244,6 +244,7 @@ def call_alpino_local(sentences, max_min_per_sent, alpino_home):
     cmd += ' end_hook=xml -flag treebank ' + out_folder_alp + ' -parse'
     logging.info('Calling Alpino with {} sentences'.format(len(sentences)))
     logging.debug("CMD: {}".format(cmd))
+    t1 = time.time()
     alpino_pro = Popen(cmd, stdin=PIPE, shell=True)
     for sentence in sentences_from_naf(sentences):
         alpino_pro.stdin.write(sentence.encode("utf-8"))
@@ -251,23 +252,33 @@ def call_alpino_local(sentences, max_min_per_sent, alpino_home):
     alpino_pro.stdin.close()
     if alpino_pro.wait() != 0:
         raise Exception("Call to alpino failed (see logs): %s" % cmd)
+    logging.debug("Alpino done in %1.3f seconds" % (time.time() - t1))
 
     # Parse results, get dependencies, and yield sentence results
-    for i, sent in enumerate(sentences):
-        xml_file = os.path.join(out_folder_alp, str(i+1)+'.xml')
-        if not os.path.exists(xml_file):
-            logging.warning('Not found the file {}'.format(xml_file))
-            continue
+    xml_files = [os.path.join(out_folder_alp, str(i+1)+'.xml') for i in range(len(sentences))]
 
+    missing_files = [xml_file for xml_file in xml_files if not os.path.exists(xml_file)]
+    if missing_files:
+        logging.warning('Not found the file {}'.format(missing_files))
+
+    t1 = time.time()
+    logging.info('Calling Alpino for dependencies')
+    alpino_bin = os.path.join(alpino_home, 'bin', 'Alpino')
+    cmd = [alpino_bin, '-treebank_triples'] + xml_files
+    logging.debug("CMD: {}".format(cmd))
+    output = check_output(cmd)
+    logging.debug("Alpino -treebank_triples done in %1.3f seconds" % (time.time() - t1))
+
+    def get_filename(output_line):
+        return output_line.decode("utf-8").split("|")[-1]
+    grouped_lines = {xml_file: list(lines) for xml_file, lines in groupby(output.splitlines(), get_filename)}
+    for i, xml_file in enumerate(xml_files):
+        lines = grouped_lines[xml_file]
+        sent = sentences[i]
+        dependencies = [Calpino_dependency(line.strip().decode('utf-8')) for line in lines]
         tree = etree.parse(xml_file, parser)
-
-        # Create dependency layer by calling alpino again with -treebank_triples
-        logging.info('Creating the dependency layer...')
-        alpino_bin = os.path.join(alpino_home, 'bin', 'Alpino')
-        cmd = [alpino_bin, '-treebank_triples', xml_file]
-        output = check_output(cmd)
-        dependencies = [Calpino_dependency(line.strip().decode('utf-8')) for line in output.splitlines()]
         # Yield sentence, parsed XML tree, and dependencies
+
         yield sent, tree, dependencies
 
     # Cleanup
