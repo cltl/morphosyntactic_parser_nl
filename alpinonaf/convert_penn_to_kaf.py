@@ -105,7 +105,7 @@ def convert_penn_to_knaf_with_numtokens(tree_str,term_ids,lemma_for_termid,off_t
             label_from = lemma_for_ter.get(node_from,'kk')
                                         
         comment = '  '+(edge_id)+'  '+(label_to)+' <- '+(label_from)+' '
-        comment = escape(comment.replace('--','-'))
+        comment = escape(comment, {"--":"&ndash"})
         if node_from in nonter_heads:
             edge_obj.set_as_head()
         edge_obj.set_comment(comment)

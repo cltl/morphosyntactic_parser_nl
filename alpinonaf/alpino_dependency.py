@@ -55,8 +55,7 @@ class Calpino_dependency:
                 for t_to in terms_to:
                     ##Creating comment
                     str_comment = ' '+self.relation+'('+self.lemma_to+','+self.lemma_from+') '
-                    str_comment = escape(str_comment)
-                    
+                    str_comment = escape(str_comment, {"--":"&ndash"})
                     my_dep = Cdependency()
                     my_dep.set_from(t_to)
                     my_dep.set_to(t_from)
