@@ -15,8 +15,8 @@ def _test_file(this_file):
     # Check the terms
     terms = [term for term in my_obj.get_terms()]
     assert_equal(len(terms),12)
-    assert_equal(my_obj.get_term('t_4').get_lemma(), 'mooi')
-    assert_equal(my_obj.get_term('t_4').get_pos(), 'adj')
+    assert_equal(terms[4].get_lemma(), 'mooi')
+    assert_equal(terms[4].get_pos(), 'adj')
 
     # Check constituents
     trees = [tree for tree in my_obj.get_trees()]
